@@ -1,0 +1,17 @@
+services:
+  ### Portainer #####################################
+  portainer:
+    container_name: "${APP_NAME}-portainer"
+    hostname: portainer
+    networks:
+      backend:
+        aliases:
+          - portainer
+    restart: unless-stopped
+    image: portainer/portainer-ee:lts
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/:/data/

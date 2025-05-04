@@ -1,0 +1,18 @@
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+include:
+  - docker/cloudflared-tunnel-compose.yml
+  - ./docker/github-runner-compose.yml
+  - ./postgres-kc/postgres-kc-compose.yml
+  - ./keycloak/keycloak-compose.yml
+  - ./mysql/mysql-compose.yml
+  - ./phpmyadmin/phpmyadmin-compose.yml
+  - ./portainer/portainer-compose.yml
+  - ./postgres/postgres-compose.yml
+  - ./pgadmin/pgadmin-compose.yml
+  - ./website/website-compose.yml
+  - ./proxy/proxy-compose.yml

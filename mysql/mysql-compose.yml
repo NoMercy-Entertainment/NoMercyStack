@@ -1,0 +1,25 @@
+
+volumes:
+  mysql: ~
+
+services:
+  ### MySQL #########################################
+  mysql:
+    container_name: "${APP_NAME}-mysql"
+    hostname: mysql
+    networks:
+      backend:
+        aliases:
+          - mysql
+    restart: unless-stopped
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TZ}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./data:/var/lib/mysql

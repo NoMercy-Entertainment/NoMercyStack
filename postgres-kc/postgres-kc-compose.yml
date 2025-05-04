@@ -1,0 +1,23 @@
+services:
+  ### Postgres #########################################
+  postgres-kc:
+    container_name: "${APP_NAME}-postgres-kc"
+    hostname: postgres-kc
+    #    command: 'gosu postgres pg_resetwal -f /var/lib/postgresql/data'
+    networks:
+      backend:
+        aliases:
+          - postgres-kc
+    image: postgres:13.1
+    restart: unless-stopped
+    mem_limit: 5120m
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
+      POSTGRES_DB: keycloak
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - "./data/:/var/lib/postgresql/data/"

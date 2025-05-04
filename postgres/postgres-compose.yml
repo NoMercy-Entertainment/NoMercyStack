@@ -1,0 +1,23 @@
+services:
+  ### Postgres #########################################
+  postgres:
+    container_name: "${APP_NAME}-postgres"
+    hostname: postgres
+    #    command: 'gosu postgres pg_resetwal -f /var/lib/postgresql/data'
+    networks:
+      backend:
+        aliases:
+          - postgres
+    image: postgres:13.1
+    restart: unless-stopped
+    mem_limit: 5120m
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - "./data/:/var/lib/postgresql/data/"

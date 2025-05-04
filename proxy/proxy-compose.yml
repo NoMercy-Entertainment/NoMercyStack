@@ -1,0 +1,27 @@
+services:
+  ### Proxy #########################################
+  proxy:
+    image: nginx
+    container_name: "${APP_NAME}-proxy"
+    hostname: proxy
+    restart: unless-stopped
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./sites:/etc/nginx/conf.d
+      - ./certificates:/etc/certificates/
+      - ../shares/:/etc/shares
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - keycloak
+      - postgres
+      - pgadmin
+      - mysql
+      - phpmyadmin
+      - portainer
+      - website

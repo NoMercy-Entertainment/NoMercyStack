@@ -1,0 +1,16 @@
+services:
+  ### Github runner ##################################
+  github-runner:
+    container_name: "${APP_NAME}-github-runner"
+    restart: unless-stopped
+    profiles: [ "dev" ]
+    build:
+      context: ./github-runner
+      dockerfile: Dockerfile
+    environment:
+      GH_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_ORG: ${GITHUB_ORG}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock

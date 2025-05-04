@@ -1,0 +1,36 @@
+services:
+  ### Keycloak #########################################
+  keycloak:
+    container_name: "${APP_NAME}-keycloak"
+    hostname: keycloak
+    networks:
+      backend:
+        aliases:
+          - keycloak
+    image: quay.io/keycloak/keycloak:22.0.1
+    restart: unless-stopped
+    command: >
+      start-dev
+      --hostname-strict true
+      --hostname-debug true
+      --db postgres
+      --db-url-host "${APP_NAME}-postgres-kc"
+      --db-username keycloak
+      --db-password ${KEYCLOAK_DATABASE_PASSWORD}
+      --hostname ${KEYCLOAK_FRONTEND_URL}
+      --hostname-admin ${KEYCLOAK_FRONTEND_URL}
+      --proxy edge
+      --spi-login-protocol-openid-connect-suppress-logout-confirmation-screen=true 
+      --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true
+      --spi-theme-static-max-age -1
+      --spi-theme-cache-themes false
+      --spi-theme-cache-templates false
+      --features token-exchange,preview,admin2,docker
+    environment:
+      KC_PROXY: edge
+    depends_on:
+      - postgres-kc
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./themes/:/opt/keycloak/themes/

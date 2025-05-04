@@ -1,0 +1,31 @@
+services:
+
+  ### PHPMyAdmin ####################################
+  phpmyadmin:
+    container_name: "${APP_NAME}-phpmyadmin"
+    hostname: phpmyadmin
+    networks:
+      backend:
+        aliases:
+          - phpmyadmin
+    restart: unless-stopped
+    image: phpmyadmin/phpmyadmin:5.1.3
+    depends_on:
+      - mysql
+    links:
+      - mysql:db
+    environment:
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_HOST="${APP_NAME}-mysql"
+      - ServerName=${MYSQL_SERVER_NAME}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./.env:/var/www/.env:ro
+      - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
+      - ./classes/DotEnv.php:/var/www/html/classes/DotEnv.php:ro
+      - ./classes/KeycloakClient.php:/var/www/html/classes/KeycloakClient.php:ro
+      - ./auth.php:/var/www/html/auth.php:ro
+      - ./login.php:/var/www/html/login.php:ro
+      - ./logout.php:/var/www/html/logout.php:ro

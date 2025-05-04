@@ -1,0 +1,30 @@
+volumes:
+  website: ~
+
+services:
+  ### NoMercy.tv ########################################
+  website:
+    container_name: "${APP_NAME}-website"
+    hostname: website
+    networks:
+      backend:
+        aliases:
+          - website
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+#    ports:
+#        - "8080:8080"
+    depends_on:
+      - mysql
+    links:
+      - mysql
