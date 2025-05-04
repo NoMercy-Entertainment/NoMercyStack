@@ -5,7 +5,7 @@ networks:
     driver: bridge
 
 include:
-  - docker/cloudflared-tunnel-compose.yml
+  - ./docker/cloudflared-tunnel-compose.yml
   - ./docker/github-runner-compose.yml
   - ./postgres-kc/postgres-kc-compose.yml
   - ./keycloak/keycloak-compose.yml

@@ -3,7 +3,6 @@ services:
   postgres-kc:
     container_name: "${APP_NAME}-postgres-kc"
     hostname: postgres-kc
-    #    command: 'gosu postgres pg_resetwal -f /var/lib/postgresql/data'
     networks:
       backend:
         aliases:
@@ -17,6 +16,8 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DATABASE_PASSWORD}
       POSTGRES_DB: keycloak
+#    ports:
+#      - "5433:5432"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

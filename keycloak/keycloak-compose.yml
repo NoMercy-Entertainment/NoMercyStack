@@ -30,6 +30,9 @@ services:
       KC_PROXY: edge
     depends_on:
       - postgres-kc
+#    ports:
+#      - "8080:8080"
+#      - "8443:8443"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro

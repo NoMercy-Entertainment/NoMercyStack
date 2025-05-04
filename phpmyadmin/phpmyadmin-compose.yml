@@ -19,6 +19,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - PMA_HOST="${APP_NAME}-mysql"
       - ServerName=${MYSQL_SERVER_NAME}
+#    ports:
+#      - "8080:80"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
