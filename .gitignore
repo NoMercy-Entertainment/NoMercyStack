@@ -28,4 +28,6 @@ shares/*
 !shares/.gitkeep
 
 website/data/*
-!website/data/.gitkeep
+!website/data/public
+website/data/public/*
+!website/data/public/.gitkeep
