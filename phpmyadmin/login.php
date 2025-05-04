@@ -8,8 +8,8 @@ function get_login_credentials()
     $access = $client->has_role('PHPMyAdmin');
 
     if ($access) {
-        $username = getenv('DB_USERNAME');
-        $password = getenv('DB_PASSWORD');
+        $username = getenv('MYSQL_USERNAME');
+        $password = getenv('MYSQL_PASSWORD');
 
         return [
             $username,
