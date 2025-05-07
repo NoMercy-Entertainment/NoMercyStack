@@ -32,6 +32,7 @@ RUN apk add --no-cache \
   php84-simplexml \
   php84-sqlite3 \
   php84-tokenizer \
+  php84-sodium \
   php84-xml \
   php84-xmlreader \
   php84-xmlwriter \
@@ -78,21 +79,17 @@ COPY --chown=nobody ./data/ /var/www/html/
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN composer update
-RUN yarn && yarn build
+RUN composer update  --no-interaction
+RUN yarn install && yarn build
 
 # Expose the port nginx is reachable on
 EXPOSE 8080
 
-# Add the start script
-COPY ./config/start.sh /start.sh
-RUN chmod +x /start.sh
-
 # Switch to use a non-root user from here on
 USER nobody
 
-# Use the script as the container's entry point
-CMD ["/start.sh"]
+# Let supervisord start nginx & php-fpm
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping || exit 1
