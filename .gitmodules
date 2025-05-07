@@ -1,0 +1,3 @@
+[submodule "website/data"]
+	path = website/data
+	url = https://github.com/NoMercy-Entertainment/NoMercy.tv.git
