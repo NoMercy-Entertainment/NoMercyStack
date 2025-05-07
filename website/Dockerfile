@@ -76,8 +76,11 @@ RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 # Add application
 # COPY --chown=nobody ./data/ /var/www/html/
 
-# # Install composer
-# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# Install composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+RUN mkdir -p /.composer /.yarn
+RUN chown -R nobody:nobody /.composer /.yarn
 
 # RUN composer update
 # RUN yarn install && yarn build
