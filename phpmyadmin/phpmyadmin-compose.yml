@@ -17,7 +17,7 @@ services:
     environment:
       - MYSQL_USERNAME=${MYSQL_USERNAME}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - PMA_HOST="${APP_NAME}-mysql"
+      - PMA_HOST=mysql
       - ServerName=${MYSQL_SERVER_NAME}
 #    ports:
 #      - "8080:80"

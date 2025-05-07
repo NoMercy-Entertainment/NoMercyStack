@@ -5,7 +5,7 @@ use JetBrains\PhpStorm\NoReturn;
 if (!class_exists('DotEnv')) {
     require '/var/www/html/classes/DotEnv.php';
 }
-new DotEnv('/var/www/.env')->load();
+(new DotEnv('/var/www/.env'))->load();
 
 class KeycloakClient
 {
