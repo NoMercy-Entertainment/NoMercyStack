@@ -1,5 +1,7 @@
 volumes:
   website: ~
+  # vendor: ~
+  # node_modules: ~
 
 services:
   ### NoMercy.tv ########################################
@@ -19,11 +21,15 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./data/:/var/www/html/
+      # - ./data/storage/logs:/var/www/html/storage/logs
+      # - vendor:/var/www/html/vendor/
+      # - node_modules:/var/www/html/node_modules/
     dns:
       - 1.1.1.1
       - 8.8.8.8
-#    ports:
-#        - "80:8080"
+    ports:
+        - "8080:8080"
     depends_on:
       - mysql
     links:

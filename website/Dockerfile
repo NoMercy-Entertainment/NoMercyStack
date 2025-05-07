@@ -74,13 +74,13 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # Add application
-COPY --chown=nobody ./data/ /var/www/html/
+# COPY --chown=nobody ./data/ /var/www/html/
 
-# Install composer
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# # Install composer
+# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN composer update  --no-interaction
-RUN yarn install && yarn build
+# RUN composer update
+# RUN yarn install && yarn build
 
 # Expose the port nginx is reachable on
 EXPOSE 8080
