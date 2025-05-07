@@ -28,8 +28,8 @@ services:
     dns:
       - 1.1.1.1
       - 8.8.8.8
-    ports:
-        - "8080:8080"
+    # ports:
+    #     - "8080:8080"
     depends_on:
       - mysql
     links:
