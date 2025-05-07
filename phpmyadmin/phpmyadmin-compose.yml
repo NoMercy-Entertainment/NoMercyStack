@@ -24,7 +24,7 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - ./.env:/var/www/.env:ro
+      - ../.env:/var/www/.env:ro
       - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
       - ./classes/DotEnv.php:/var/www/html/classes/DotEnv.php:ro
       - ./classes/KeycloakClient.php:/var/www/html/classes/KeycloakClient.php:ro
