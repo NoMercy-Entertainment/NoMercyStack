@@ -14,7 +14,7 @@ services:
       --hostname-strict true
       --hostname-debug true
       --db postgres
-      --db-url-host "${APP_NAME}-postgres-kc"
+      --db-url-host postgres-kc
       --db-username keycloak
       --db-password ${KEYCLOAK_DATABASE_PASSWORD}
       --hostname ${KEYCLOAK_FRONTEND_URL}

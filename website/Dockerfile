@@ -1,8 +1,11 @@
 FROM alpine:3.21
 LABEL Maintainer="Stoney Eagle <stoney@nomercy.tv>"
 LABEL Description="Lightweight container with Nginx 1.26 & PHP 8.4 based on Alpine Linux."
+
 # Setup document root
 WORKDIR /var/www/html
+
+RUN adduser -D -g '' www sudo
 
 # Install packages and remove default server definition
 RUN apk add --no-cache \
@@ -64,35 +67,37 @@ COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
 ENV PHP_INI_DIR /etc/php84
-COPY config/fpm-pool.conf ${PHP_INI_DIR}/php-fpm.d/www.conf
-COPY config/php.ini ${PHP_INI_DIR}/conf.d/custom.ini
+ENV php_ini ${PHP_INI_DIR}/php.ini
+ENV fpm_conf ${PHP_INI_DIR}/php-fpm.d/www.conf
+
+COPY config/fpm-pool.conf ${fpm_conf}
+COPY config/php.ini ${php_ini}
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+# Make sure files/folders needed by the processes are accessable when they run under the www user
+RUN chown -R www:www /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # Add application
-# COPY --chown=nobody ./data/ /var/www/html/
+# COPY --chown=www ./data/ /var/www/html/
 
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN mkdir -p /.composer /.yarn
-RUN chown -R nobody:nobody /.composer /.yarn
-
-# RUN composer update
-# RUN yarn install && yarn build
-
 # Expose the port nginx is reachable on
+ADD config/start.sh /start.sh
+RUN chmod 755 /start.sh
+
+ADD config/resolv.conf /etc/resolv.conf
+
 EXPOSE 8080
 
-# Switch to use a non-root user from here on
-USER nobody
+RUN sed -i -e 's/\r$//' /start.sh
 
-# Let supervisord start nginx & php-fpm
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+USER www
+
+CMD ["/start.sh"]
 
 # Configure a healthcheck to validate that everything is up&running
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping || exit 1
