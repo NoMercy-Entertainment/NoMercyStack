@@ -1,6 +1,6 @@
 # nomercy-stack
 
-A multi-service development stack using Docker Compose, including MySQL, PostgreSQL, Keycloak, phpMyAdmin, pgAdmin, Portainer, Nginx proxy, and a website container. This stack is designed for local development and testing.
+A multi-service stack using Docker Compose, including MySQL, PostgreSQL, Keycloak, phpMyAdmin, pgAdmin, Portainer, Nginx proxy, and a website container. This is the production stack for the control plane (`nomercy-tv`) and Keycloak; it is also runnable locally for development and testing.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ A multi-service development stack using Docker Compose, including MySQL, Postgre
 
 1. **Clone the repository**
    ```sh
-   git https://github.com/NoMercy-Entertainment/nomercy-stack.git
+   git clone https://github.com/NoMercy-Entertainment/nomercy-stack.git
    cd nomercy-stack
    ```
 
@@ -24,14 +24,14 @@ A multi-service development stack using Docker Compose, including MySQL, Postgre
    - Some services may require additional configuration in their respective folders.
 
 1. **Access Services**
-   - **Website**: https://example.com
-   - **phpMyAdmin**: https://phpmyadmin.example.com
-   - **pgAdmin**: https://pgadmin.example.com
-   - **Keycloak**: https://auth.example.com
-   - **Portainer**: https://portainer.example.com
+   - **Website**: https://nomercy.tv (production; `proxy/sites/website.conf`)
+   - **phpMyAdmin**: https://phpmyadmin.nomercy.tv
+   - **pgAdmin**: https://pgadmin.nomercy.tv
+   - **Keycloak**: https://auth.nomercy.tv
+   - **Portainer**: https://portainer.nomercy.tv
    - **Nginx Proxy**: Handles routing to the above services
 
-   > Replace `example.com` with your actual domain as configured in the `proxy/sites/` conf files.
+   > These are the production domains configured in `proxy/sites/`. Running the stack under your own domain, replace them there and below.
 
 1. **Start the Stack**
    ```sh
@@ -43,18 +43,18 @@ A multi-service development stack using Docker Compose, including MySQL, Postgre
 
 To enable Keycloak authentication in Portainer:
 
-1. Log in to Portainer at https://portainer.example.com as an admin.
+1. Log in to Portainer at https://portainer.nomercy.tv as an admin.
 2. Go to **Settings** > **Authentication**.
 3. Select **OAuth** as the authentication method.
-4. Enter the following values (replace `example.com` with your actual domain):
+4. Enter the following values (replace `nomercy.tv` with your own domain if self-hosting the stack):
 
    - **Client ID**: `master`
    - **Client Secret**: `*******` (your Keycloak client secret)
-   - **Authorization URL**: `https://auth.example.com/realms/master/protocol/openid-connect/auth`
-   - **Access Token URL**: `https://auth.example.com/realms/master/protocol/openid-connect/token`
-   - **Resource URL**: `https://auth.example.com/realms/master/protocol/openid-connect/userinfo`
-   - **Redirect URL**: `https://portainer.example.com`
-   - **Logout URL**: `https://auth.example.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://portainer.example.com/#!/auth`
+   - **Authorization URL**: `https://auth.nomercy.tv/realms/master/protocol/openid-connect/auth`
+   - **Access Token URL**: `https://auth.nomercy.tv/realms/master/protocol/openid-connect/token`
+   - **Resource URL**: `https://auth.nomercy.tv/realms/master/protocol/openid-connect/userinfo`
+   - **Redirect URL**: `https://portainer.nomercy.tv`
+   - **Logout URL**: `https://auth.nomercy.tv/realms/master/protocol/openid-connect/logout?redirect_uri=https://portainer.nomercy.tv/#!/auth`
    - **User Identifier**: `email`
    - **Scopes**: `openid profile email`
    - **Auth Style**: (leave as default or as required by your setup)
@@ -75,6 +75,10 @@ To enable Keycloak authentication in Portainer:
 - `website/`        - Website container (PHP, Nginx, etc.)
 - `shares/`         - Shared files (if any)
 - `scripts/`        - Host provisioning + maintenance scripts (see below)
+- `fail2ban/`       - Fail2Ban jail/filter config and compose file
+- `autoheal/`       - Autoheal service that restarts unhealthy containers
+- `dns/`            - DNS service config
+- `logs/`           - Bind-mounted log output (nginx, etc.), rotated by `scripts/`
 
 ## Host provisioning scripts (production droplet)
 
