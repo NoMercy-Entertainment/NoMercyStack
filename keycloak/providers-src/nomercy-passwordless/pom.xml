@@ -6,7 +6,7 @@
 
     <groupId>tv.nomercy.keycloak</groupId>
     <artifactId>nomercy-passwordless-authenticator</artifactId>
-    <version>1.0.0-KC26.6.4</version>
+    <version>1.0.0-KC26.7.2</version>
     <packaging>jar</packaging>
 
     <name>NoMercy Passwordless Email/Password Authenticator</name>
@@ -15,7 +15,7 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <keycloak.version>26.6.4</keycloak.version>
+        <keycloak.version>26.7.2</keycloak.version>
     </properties>
 
     <dependencies>
